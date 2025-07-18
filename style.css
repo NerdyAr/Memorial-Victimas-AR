@@ -1,48 +1,240 @@
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
     color: #333;
+    display: flex; /* Usamos flexbox para centrar el contenido principal */
+    flex-direction: column; /* Apila los elementos verticalmente */
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
 }
-header, footer {
-    background-color: #2c2c2c;
+
+/* Contenedor principal para centrar el contenido y limitar su ancho */
+.container {
+    width: 90%; /* Ocupa el 90% del ancho disponible */
+    max-width: 960px; /* Pero no más de 960px en pantallas grandes */
+    margin: 20px auto; /* Centra el contenedor horizontalmente con margen superior/inferior */
+    flex-grow: 1; /* Permite que el contenedor crezca y ocupe el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente los elementos dentro del contenedor */
+    justify-content: center; /* Centra verticalmente si el contenido es menor que la altura del contenedor */
+}
+
+/* Estilos para el modal, para centrarlo y que cubra toda la pantalla */
+#modal {
+    display: flex; /* Usa flexbox para centrar el contenido del modal */
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
     color: white;
-    padding: 1rem;
-    text-align: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box; /* Incluye padding en el ancho/alto */
+    text-align: center; /* Para centrar texto si no es un elemento flex */
 }
-main {
-    padding: 1rem;
+
+#modal h2 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem); /* Tamaño de fuente responsivo */
+    margin-bottom: 20px;
 }
-img {
-    max-width: 100%;
-    height: auto;
+
+#modal iframe {
+    max-width: 90%; /* Asegura que el video no sea más ancho que la pantalla */
+    width: 560px; /* Ancho por defecto */
+    height: 315px; /* Alto por defecto */
+    margin-bottom: 20px;
 }
+
+/* Media queries para hacer el iframe más responsivo */
+@media (max-width: 600px) {
+    #modal iframe {
+        width: 100%;
+        height: auto; /* Permite que la altura se ajuste automáticamente */
+        aspect-ratio: 16 / 9; /* Mantiene la relación de aspecto 16:9 */
+    }
+}
+
+
+#modal p {
+    margin-bottom: 15px;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+#modal audio {
+    width: 80%; /* Ancho del reproductor de audio */
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+#modal button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+#modal button:hover {
+    background-color: #0056b3;
+}
+
+/* Ajustes para el carrusel existente */
 .carousel {
     display: flex;
-    overflow-x: scroll;
-}
-.card {
+    overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    justify-content: center; /* Centra la imagen dentro del carrusel */
+    align-items: center;
+    flex-direction: column; /* Apila la imagen y la leyenda */
+    position: relative; /* Para posicionar los botones de navegación si los añades */
     background-color: white;
-    margin: 1rem;
-    padding: 1rem;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-.caption {
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+
+#victimPhoto {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Elimina espacio extra debajo de la imagen */
+    margin-bottom: 15px; /* Espacio entre la imagen y la leyenda */
+    border-radius: 4px; /* Bordes ligeramente redondeados para la imagen */
 }
-#accesibilidad-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #000;
-    color: #fff;
-    padding: 0.5rem 1rem;
+
+#photoCaption {
+    font-size: 1.1rem;
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.carousel button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 1rem;
 }
+
+.carousel button:hover {
+    background-color: #218838;
+}
+
+/* Media queries para el diseño general */
+@media (max-width: 768px) {
+    .container {
+        width: 95%; /* Un poco más de ancho en tabletas */
+    }
+    #photoCaption {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%; /* Ocupa todo el ancho en móviles pequeños */
+        padding: 0 10px; /* Un poco de padding en los lados */
+        margin: 10px auto;
+    }
+    .carousel {
+        padding: 15px;
+        border-radius: 0; /* Sin bordes redondeados en móviles si quieres */
+    }
+    #photoCaption {
+        font-size: 0.9rem;
+    }
+}
+index.html (Modificar)
+
+Envuelve tu carousel y cualquier otro contenido principal que quieras centrar dentro de un nuevo div con la clase container.
+
+HTML
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Memorial - Verdad, Justicia y Memoria</title>
+  <meta name="description" content="Memorial interactivo de víctimas en Argentina. Rostros, historias, memoria colectiva.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="modal">
+    <h2>Verdad, Justicia y Memoria: el rostro de quienes nos faltan</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID?autoplay=1&mute=1&controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Artículo de Arturo Pérez-Reverte: <a href="https://arturoperez-reverte.blogspot.com/2009/07/la-rendicion-de-breda.html" target="_blank">La rendición de Breda (APA, 2009)</a></p>
+    <audio id="manifiestoAudio" controls autoplay loop> <source src="manifiesto.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+    </audio>
+    <button onclick="hideModalAndPlayManifiesto()">Ingresar</button>
+  </div>
+
+  <div class="container">
+    <div class="carousel">
+      <img id="victimPhoto" src="images/fem_ene29.jpg" alt="Víctima">
+      <div id="photoCaption">Femicidio enero 2025. [Fuente: Ahora Que Sí Nos Ven]</div>
+      <button onclick="shareNow()">Compartir</button>
+      <button class="prev-btn">Anterior</button>
+      <button class="next-btn">Siguiente</button>
+    </div>
+
+    <div id="lsa-section" style="margin-top: 30px; text-align: center;">
+        <h3>Interpretación en Lengua de Señas Argentina (LSA)</h3>
+        <video id="lsaVideo" src="ruta/a/tu/video-lsa.mp4" controls loop autoplay style="max-width: 100%; height: auto; border-radius: 8px;"></video>
+        <p>Este espacio ofrece una interpretación del contenido en LSA para personas sordas e hipoacúsicas.</p>
+    </div>
+  </div>
+
+  <audio id="backgroundMusic" loop muted>
+      <source src="musica_reflexion.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+  </audio>
+
+  <script src="js/carousel.js"></script>
+  <script src="js/share.js"></script>
+  <script>
+    // Función para manejar la ocultación del modal y la reproducción del audio
+    function hideModalAndPlayManifiesto() {
+        document.getElementById('modal').style.display = 'none';
+        const manifiestoAudio = document.getElementById('manifiestoAudio');
+        manifiestoAudio.play(); // Asegura la reproducción del manifiesto
+        
+        // Retrasa la reproducción de la música de fondo para que no se superponga al inicio
+        setTimeout(() => {
+            const bgMusic = document.getElementById('backgroundMusic');
+            bgMusic.muted = false; // Desmutea la música de fondo
+            bgMusic.play();
+        }, 1000); // Pequeño retraso de 1 segundo
+    }
+
+    // Asegura que el modal sea visible al cargar
+    window.onload = function() {
+        document.getElementById('modal').style.display = 'flex'; // Usamos flex para centrar
+    };
+
+    // Para evitar problemas de autoplay en navegadores modernos, que a menudo requieren interacción del usuario.
+    // Aunque ya tenemos un botón de "Ingresar" que dispara el audio, esto es un extra.
+    document.addEventListener('click', function userInteraction() {
+        const bgMusic = document.getElementById('backgroundMusic');
+        if (bgMusic.paused) {
+            bgMusic.play().catch(e => console.log("Autoplay de música de fondo bloqueado:", e));
+        }
+        document.removeEventListener('click', userInteraction);
+    });
+
+  </script>
+</body>
+</html>
