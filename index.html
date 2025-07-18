@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <style>
-    /* Estilos integrados de styles.css */
+    /* Estilos integrados para centrado, responsividad y diseño general */
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
@@ -199,7 +199,7 @@
 <body>
   <div id="modal">
     <h2>Verdad, Justicia y Memoria: el rostro de quienes nos faltan</h2>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/NRtvqT_wMeY?si=gJQ8NwmiHpekAWsN" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="http://googleusercontent.com/youtube.com/4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <p>Artículo de Arturo Pérez-Reverte: <a href="https://arturoperez-reverte.blogspot.com/2009/07/la-rendicion-de-breda.html" target="_blank">La rendición de Breda (APA, 2009)</a></p>
     <audio id="manifiestoAudio" controls>
       <source src="manifiesto.mp3" type="audio/mpeg">
@@ -225,22 +225,19 @@
     </div>
   </div>
 
-  <audio id="backgroundMusic" loop muted>
-      <source src="musica_reflexion.mp3" type="audio/mpeg">
-      Tu navegador no soporta audio.
-  </audio>
+  <audio id="backgroundMusic" muted></audio> 
 
   <button id="accesibilidad-btn">Accesibilidad</button>
 
   <script>
-    // JavaScript integrado de carousel.js y share.js, más lógica de audio
+    // JavaScript para el carrusel, compartir, y gestión de audio
 
-    // Datos del carrusel
+    // Datos del carrusel (puedes agregar/modificar semanalmente)
     const victimPhotos = [
         { src: "images/fem_ene29.jpg", caption: "Femicidio enero 2025. [Fuente: Ahora Que Sí Nos Ven]" },
         { src: "images/desaparecido_dic24.jpg", caption: "Desaparecido en democracia, diciembre 2024. [Fuente: HuffPost]" },
         { src: "images/victima_nov24.jpg", caption: "Víctima de violencia institucional, noviembre 2024. [Fuente: Agencia Telam]" },
-        // Agrega más objetos aquí cada semana
+        // Agrega más objetos aquí cada semana para nuevas fotos y leyendas
         // { src: "images/nueva_foto.jpg", caption: "Nueva víctima, fecha. [Fuente: Tu Fuente]" },
     ];
 
@@ -299,15 +296,44 @@
     const backgroundMusic = document.getElementById('backgroundMusic');
     const modal = document.getElementById('modal');
 
+    // Define tu playlist de música de fondo (ASEGÚRATE DE QUE ESTOS ARCHIVOS EXISTAN)
+    const backgroundPlaylist = [
+        "musica_reflexion_1.mp3", // Primer tema reflexivo
+        "musica_reflexion_2.mp3", // Segundo tema reflexivo
+        "musica_reflexion_3.mp3"  // Tercer tema reflexivo
+    ];
+    let currentSongIndex = 0;
+
+    // Función para reproducir el siguiente tema de la playlist de fondo
+    function playNextBackgroundSong() {
+        if (backgroundPlaylist.length === 0) return; // No hay canciones para reproducir
+
+        // Carga la siguiente canción
+        backgroundMusic.src = backgroundPlaylist[currentSongIndex];
+        backgroundMusic.load(); // Carga el nuevo archivo de audio
+
+        backgroundMusic.play().catch(e => console.log("Error al reproducir canción de fondo:", e));
+
+        // Pasa a la siguiente canción en la lista, haciendo un loop al principio si llega al final
+        currentSongIndex = (currentSongIndex + 1) % backgroundPlaylist.length;
+    }
+
+    // Escucha el evento 'ended' (cuando la canción actual termina)
+    backgroundMusic.addEventListener('ended', playNextBackgroundSong);
+
     // Función para manejar la ocultación del modal y la reproducción del audio
     function hideModalAndPlayAudio() {
         modal.style.display = 'none';
-        manifiestoAudio.play().catch(e => console.log("Error al reproducir manifiesto:", e)); // Asegura la reproducción
+        // El manifiesto se reproduce una sola vez, ya no tiene el atributo 'loop' en HTML
+        manifiestoAudio.play().catch(e => console.log("Error al reproducir manifiesto:", e));
         
-        // Retrasa la reproducción de la música de fondo
+        // Inicia la playlist de música de fondo solo si no está ya reproduciéndose
+        // y después de un pequeño retraso para no chocar con el manifiesto
         setTimeout(() => {
-            backgroundMusic.muted = false; // Desmutea la música de fondo
-            backgroundMusic.play().catch(e => console.log("Error al reproducir música de fondo:", e));
+            if (backgroundMusic.paused) { // Solo si la música de fondo no está sonando aún
+                backgroundMusic.muted = false; // Desmutea la música de fondo
+                playNextBackgroundSong(); // Inicia la reproducción de la playlist
+            }
         }, 1000); // Pequeño retraso de 1 segundo
     }
 
@@ -317,6 +343,7 @@
     };
 
     // Para intentar reproducir la música de fondo al primer clic del usuario en cualquier parte del documento
+    // Esto es un fallback por si los navegadores bloquean el autoplay inicial
     document.addEventListener('click', function userInteraction() {
         if (backgroundMusic.paused) {
             backgroundMusic.play().catch(e => console.log("Autoplay de música de fondo bloqueado:", e));
@@ -326,14 +353,14 @@
 
     // Lógica del botón de accesibilidad (puedes expandir esto)
     document.getElementById('accesibilidad-btn').addEventListener('click', function() {
-        alert('Funciones de accesibilidad (LSA, contraste, tamaño de texto) se implementarán aquí.');
+        alert('Funciones de accesibilidad (LSA, contraste, tamaño de texto) se implementarán aquí. Mira la sección de LSA.');
         // Aquí puedes agregar funciones para cambiar el contraste, el tamaño de la fuente,
-        // o mostrar/ocultar la sección de LSA si es necesario.
+        // o mostrar/ocultar la sección de LSA.
         const lsaSection = document.getElementById('lsa-section');
-        lsaSection.style.display = lsaSection.style.display === 'none' ? 'block' : 'none';
+        // Alterna la visibilidad de la sección LSA
+        lsaSection.style.display = lsaSection.style.display === 'none' || lsaSection.style.display === '' ? 'block' : 'none';
     });
 
   </script>
 </body>
 </html>
-
