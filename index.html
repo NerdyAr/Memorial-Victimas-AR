@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,27 +5,335 @@
   <title>Memorial - Verdad, Justicia y Memoria</title>
   <meta name="description" content="Memorial interactivo de víctimas en Argentina. Rostros, historias, memoria colectiva.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/styles.css">
+  
+  <style>
+    /* Estilos integrados de styles.css */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    header, footer {
+        background-color: #2c2c2c;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+    }
+    main {
+        padding: 1rem;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    /* Contenedor principal para centrar el contenido y limitar su ancho */
+    .container {
+        width: 90%;
+        max-width: 960px;
+        margin: 20px auto;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    /* Estilos para el modal, para centrarlo y que cubra toda la pantalla */
+    #modal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
+        z-index: 1000;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+    #modal h2 {
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+        margin-bottom: 20px;
+    }
+    #modal iframe {
+        max-width: 90%;
+        width: 560px;
+        height: 315px;
+        margin-bottom: 20px;
+    }
+    /* Media queries para hacer el iframe más responsivo */
+    @media (max-width: 600px) {
+        #modal iframe {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+        }
+    }
+    #modal p {
+        margin-bottom: 15px;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+    }
+    #modal audio {
+        width: 80%;
+        max-width: 400px;
+        margin-bottom: 20px;
+    }
+    #modal button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1rem;
+    }
+    #modal button:hover {
+        background-color: #0056b3;
+    }
+    /* Ajustes para el carrusel */
+    .carousel {
+        display: flex;
+        overflow: hidden; /* Oculta la barra de desplazamiento */
+        position: relative; /* Para posicionar los botones de navegación */
+        width: 100%; /* Ocupa todo el ancho del contenedor */
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    #victimPhoto {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    #photoCaption {
+        font-size: 1.1rem;
+        text-align: center;
+        color: #555;
+        margin-bottom: 20px;
+        font-style: italic;
+    }
+    .carousel .share-btn { /* Clase para el botón Compartir */
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-bottom: 10px; /* Espacio entre el botón compartir y los de navegación */
+    }
+    .carousel .share-btn:hover {
+        background-color: #218838;
+    }
+
+    .carousel-nav-btns {
+        display: flex;
+        gap: 10px; /* Espacio entre los botones Anterior y Siguiente */
+        margin-top: 10px;
+    }
+    .carousel-nav-btns button {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    .carousel-nav-btns button:hover {
+        background-color: #0056b3;
+    }
+
+    #accesibilidad-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #000;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    /* Media queries para el diseño general */
+    @media (max-width: 768px) {
+        .container {
+            width: 95%;
+        }
+        #photoCaption {
+            font-size: 1rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .container {
+            width: 100%;
+            padding: 0 10px;
+            margin: 10px auto;
+        }
+        .carousel {
+            padding: 15px;
+            border-radius: 0;
+        }
+        #photoCaption {
+            font-size: 0.9rem;
+        }
+    }
+  </style>
 </head>
 <body>
   <div id="modal">
     <h2>Verdad, Justicia y Memoria: el rostro de quienes nos faltan</h2>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/NRtvqT_wMeY?si=gJQ8NwmiHpekAWsN" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="http://googleusercontent.com/youtube.com/3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <p>Artículo de Arturo Pérez-Reverte: <a href="https://arturoperez-reverte.blogspot.com/2009/07/la-rendicion-de-breda.html" target="_blank">La rendición de Breda (APA, 2009)</a></p>
-    <audio controls>
+    <audio id="manifiestoAudio" controls loop>
       <source src="manifiesto.mp3" type="audio/mpeg">
       Tu navegador no soporta audio.
     </audio>
-    <button onclick="document.getElementById('modal').style.display='none'">Ingresar</button>
+    <button onclick="hideModalAndPlayAudio()">Ingresar</button>
   </div>
 
-  <div class="carousel">
-    <img id="victimPhoto" src="images/fem_ene29.jpg" alt="Víctima">
-    <div id="photoCaption">Femicidio enero 2025. [Fuente: Ahora Que Sí Nos Ven]</div>
-    <button onclick="shareNow()">Compartir</button>
+  <div class="container">
+    <div class="carousel">
+      <img id="victimPhoto" src="images/fem_ene29.jpg" alt="Víctima">
+      <div id="photoCaption">Femicidio enero 2025. [Fuente: Ahora Que Sí Nos Ven]</div>
+      <button class="share-btn" onclick="shareNow()">Compartir</button>
+      <div class="carousel-nav-btns">
+        <button class="prev-btn">Anterior</button>
+        <button class="next-btn">Siguiente</button>
+      </div>
+    </div>
+
+    <div id="lsa-section" style="margin-top: 30px; text-align: center;">
+        <h3>Interpretación en Lengua de Señas Argentina (LSA)</h3>
+        <p>Este espacio ofrece una interpretación del contenido en LSA para personas sordas e hipoacúsicas.</p>
+    </div>
   </div>
 
-  <script src="js/carousel.js"></script>
-  <script src="js/share.js"></script>
+  <audio id="backgroundMusic" loop muted>
+      <source src="musica_reflexion.mp3" type="audio/mpeg">
+      Tu navegador no soporta audio.
+  </audio>
+
+  <button id="accesibilidad-btn">Accesibilidad</button>
+
+  <script>
+    // JavaScript integrado de carousel.js y share.js, más lógica de audio
+
+    // Datos del carrusel
+    const victimPhotos = [
+        { src: "images/fem_ene29.jpg", caption: "Femicidio enero 2025. [Fuente: Ahora Que Sí Nos Ven]" },
+        { src: "images/desaparecido_dic24.jpg", caption: "Desaparecido en democracia, diciembre 2024. [Fuente: HuffPost]" },
+        { src: "images/victima_nov24.jpg", caption: "Víctima de violencia institucional, noviembre 2024. [Fuente: Agencia Telam]" },
+        // Agrega más objetos aquí cada semana
+        // { src: "images/nueva_foto.jpg", caption: "Nueva víctima, fecha. [Fuente: Tu Fuente]" },
+    ];
+
+    let currentIndex = 0;
+    const victimPhotoElement = document.getElementById('victimPhoto');
+    const photoCaptionElement = document.getElementById('photoCaption');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    function updateCarousel() {
+        victimPhotoElement.src = victimPhotos[currentIndex].src;
+        photoCaptionElement.textContent = victimPhotos[currentIndex].caption;
+    }
+
+    function showNextPhoto() {
+        currentIndex = (currentIndex + 1) % victimPhotos.length;
+        updateCarousel();
+    }
+
+    function showPrevPhoto() {
+        currentIndex = (currentIndex - 1 + victimPhotos.length) % victimPhotos.length;
+        updateCarousel();
+    }
+
+    // Inicializa el carrusel
+    updateCarousel();
+
+    // Navegación manual
+    prevBtn.addEventListener('click', showPrevPhoto);
+    nextBtn.addEventListener('click', showNextPhoto);
+
+    // Autoplay del carrusel
+    let carouselInterval = setInterval(showNextPhoto, 7000); // Cambia cada 7 segundos (7000 ms)
+
+    // Lógica para compartir (simplificada, puedes expandirla)
+    function shareNow() {
+        if (navigator.share) {
+            navigator.share({
+                title: document.title,
+                text: 'Conoce el Memorial de Víctimas en Argentina: ' + photoCaptionElement.textContent,
+                url: window.location.href,
+            }).then(() => {
+                console.log('Contenido compartido con éxito');
+            }).catch((error) => {
+                console.error('Error al compartir:', error);
+            });
+        } else {
+            alert('La función de compartir no está disponible en este navegador. Puedes copiar la URL: ' + window.location.href);
+            // O proporcionar una alternativa como copiar al portapapeles
+            // navigator.clipboard.writeText(window.location.href);
+        }
+    }
+
+    // Lógica de audio y modal
+    const manifiestoAudio = document.getElementById('manifiestoAudio');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const modal = document.getElementById('modal');
+
+    // Función para manejar la ocultación del modal y la reproducción del audio
+    function hideModalAndPlayAudio() {
+        modal.style.display = 'none';
+        manifiestoAudio.play().catch(e => console.log("Error al reproducir manifiesto:", e)); // Asegura la reproducción
+        
+        // Retrasa la reproducción de la música de fondo
+        setTimeout(() => {
+            backgroundMusic.muted = false; // Desmutea la música de fondo
+            backgroundMusic.play().catch(e => console.log("Error al reproducir música de fondo:", e));
+        }, 1000); // Pequeño retraso de 1 segundo
+    }
+
+    // Asegura que el modal sea visible al cargar
+    window.onload = function() {
+        modal.style.display = 'flex'; // Usamos flex para centrar el modal
+    };
+
+    // Para intentar reproducir la música de fondo al primer clic del usuario en cualquier parte del documento
+    document.addEventListener('click', function userInteraction() {
+        if (backgroundMusic.paused) {
+            backgroundMusic.play().catch(e => console.log("Autoplay de música de fondo bloqueado:", e));
+        }
+        document.removeEventListener('click', userInteraction); // Elimina el listener una vez que se ha intentado la reproducción
+    });
+
+    // Lógica del botón de accesibilidad (puedes expandir esto)
+    document.getElementById('accesibilidad-btn').addEventListener('click', function() {
+        alert('Funciones de accesibilidad (LSA, contraste, tamaño de texto) se implementarán aquí.');
+        // Aquí puedes agregar funciones para cambiar el contraste, el tamaño de la fuente,
+        // o mostrar/ocultar la sección de LSA si es necesario.
+        const lsaSection = document.getElementById('lsa-section');
+        lsaSection.style.display = lsaSection.style.display === 'none' ? 'block' : 'none';
+    });
+
+  </script>
 </body>
 </html>
+
